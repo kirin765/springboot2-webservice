@@ -4,6 +4,7 @@ package org.example.springboot.service.posts;
 import lombok.RequiredArgsConstructor;
 import org.example.springboot.domain.posts.Posts;
 import org.example.springboot.domain.posts.PostsRepository;
+import org.example.springboot.web.dto.PostsListResponseDto;
 import org.example.springboot.web.dto.PostsResponseDto;
 import org.example.springboot.web.dto.PostsSaveRequestDto;
 import org.example.springboot.web.dto.PostsUpdateRequestDto;
@@ -40,6 +41,13 @@ public class PostsService {
                 .orElseThrow(() -> new IllegalArgumentException("해당 사용자가 없습니다. id=" + id));
 
         return new PostsResponseDto(entity);
+    }
+
+    @Transactional(readOnly = true)
+    public List<PostsListResponseDto> findAllDesc() {
+        return postsRepository.findAllDesc().stream()
+                .map(PostsListResponseDto::new)
+                .collect(Collectors.toList());
     }
 
 }
